@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReviewReport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["summary", "status", "total_findings", "findings"],
+  "properties": {
+    "summary": { "type": "string", "minLength": 1, "maxLength": 4000 },
+    "status": { "enum": ["approve", "comment", "request_changes"] },
+    "total_findings": { "type": "integer", "minimum": 0 },
+    "findings": { "type": "array", "items": { "$ref": "#/$defs/finding" } }
+  },
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["category", "severity", "confidence", "file", "line",
+                   "title", "description", "evidence", "impact", "suggestion"],
+      "properties": {
+        "category": { "enum": ["correctness", "security", "performance",
+          "error_handling", "maintainability", "complexity", "testing",
+          "conventions", "regression", "architecture"] },
+        "severity": { "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"] },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "file": { "type": "string", "minLength": 1 },
+        "line": { "type": "integer", "minimum": 1 },
+        "title": { "type": "string", "minLength": 5, "maxLength": 120 },
+        "description": { "type": "string", "minLength": 20 },
+        "evidence": { "type": "string", "minLength": 1 },
+        "impact": { "type": "string", "minLength": 10 },
+        "suggestion": { "type": "string", "minLength": 10 },
+        "source": { "enum": ["static", "ai"] },
+        "rule_id": { "type": ["string", "null"] },
+        "fingerprint": { "type": "string" }
+      }
+    }
+  }
+}

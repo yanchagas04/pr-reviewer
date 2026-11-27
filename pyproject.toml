@@ -1,0 +1,37 @@
+[project]
+name = "pr-reviewer"
+version = "0.1.0"
+description = "Agente verificador de Pull Request distribuído como GitHub Action"
+readme = "README.md"
+authors = [
+    { name = "Yan Campêlo das Chagas", email = "yanchagas2004@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "httpx>=0.29.0",
+    "pydantic>=2.14.4",
+]
+
+[project.scripts]
+pr-reviewer = "pr_reviewer.main:main"
+
+[build-system]
+requires = ["uv_build>=0.13.8,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "jsonschema>=4.26.0",
+    "pytest>=9.2.0",
+    "ruff>=0.17.6",
+]

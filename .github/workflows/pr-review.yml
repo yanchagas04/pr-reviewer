@@ -1,0 +1,22 @@
+# Usa o próprio agente neste repositório. A imagem vem do GHCR (action.yml),
+# então mudanças no código só valem aqui depois de publicadas.
+name: PR Review
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+permissions:
+  contents: read
+  pull-requests: write
+concurrency:
+  group: pr-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: ./
+        with:
+          groq-api-key: ${{ secrets.GROQ_API_KEY }}
