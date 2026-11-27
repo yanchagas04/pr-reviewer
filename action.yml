@@ -1,0 +1,32 @@
+name: PR Reviewer
+description: Revisão automática de Pull Requests com análise estática e IA (Groq)
+author: yanchagas04
+branding:
+  icon: check-circle
+  color: purple
+
+inputs:
+  groq-api-key:
+    description: Chave da API da Groq. Sem ela, a análise de IA não roda.
+    required: false
+  model:
+    description: Modelo da Groq usado na análise.
+    required: false
+  ai-enabled:
+    description: Use "false" para rodar só a análise estática.
+    required: false
+    default: "true"
+  github-token:
+    description: Token usado para comentar no PR.
+    required: false
+    default: ${{ github.token }}
+
+runs:
+  using: docker
+  # Imagem pronta: evita o build do Dockerfile a cada execução.
+  image: docker://ghcr.io/yanchagas04/pr-reviewer:v0
+  env:
+    GITHUB_TOKEN: ${{ inputs.github-token }}
+    GROQ_API_KEY: ${{ inputs.groq-api-key }}
+    PR_REVIEWER_MODEL: ${{ inputs.model }}
+    PR_REVIEWER_AI_ENABLED: ${{ inputs.ai-enabled }}
